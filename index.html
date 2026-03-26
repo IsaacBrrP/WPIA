@@ -1,0 +1,1607 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arquitectura de Soluciones Inteligentes | Business Intelligence e IA Aplicada</title>
+    <style>
+        /* CSS Variables for Design System */
+        :root {
+            --color-bg-primary: #0a0e14;
+            --color-bg-secondary: #151a23;
+            --color-bg-card: #1a2030;
+            --color-bg-card-hover: #1f2637;
+            --color-text-primary: #e8edf4;
+            --color-text-secondary: #a8b5c7;
+            --color-text-muted: #6b7a8f;
+            --color-accent-gold: #c9a961;
+            --color-accent-gold-muted: #9a824c;
+            --color-accent-green: #2d5046;
+            --color-accent-green-bright: #3d7065;
+            --color-border: #2a3444;
+            --color-border-light: #384152;
+
+            --font-serif: Georgia, 'Times New Roman', serif;
+            --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 2rem;
+            --spacing-lg: 4rem;
+            --spacing-xl: 6rem;
+
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--color-bg-primary);
+            color: var(--color-text-primary);
+            line-height: 1.7;
+            font-size: 16px;
+            overflow-x: hidden;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-family: var(--font-serif);
+            font-weight: 400;
+            line-height: 1.3;
+            color: var(--color-text-primary);
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: var(--spacing-md);
+            letter-spacing: -0.02em;
+        }
+
+        h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: var(--spacing-md);
+            letter-spacing: -0.01em;
+        }
+
+        h3 {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        h4 {
+            font-size: clamp(1.25rem, 2vw, 1.5rem);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        p {
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-text-secondary);
+        }
+
+        a {
+            color: var(--color-accent-gold);
+            text-decoration: none;
+            transition: var(--transition-smooth);
+        }
+
+        a:hover {
+            color: var(--color-text-primary);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(10, 14, 20, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--color-border);
+            z-index: 1000;
+            padding: var(--spacing-sm) 0;
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            color: var(--color-accent-gold);
+            letter-spacing: 0.05em;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: var(--spacing-md);
+        }
+
+        nav a {
+            color: var(--color-text-secondary);
+            font-size: 0.95rem;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: 4px;
+            transition: var(--transition-smooth);
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--color-accent-gold);
+            background-color: rgba(201, 169, 97, 0.1);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        /* Sections */
+        section {
+            padding: var(--spacing-xl) 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: var(--transition-slow);
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        section:first-of-type {
+            padding-top: calc(var(--spacing-xl) + 80px);
+        }
+
+        .section-header {
+            margin-bottom: var(--spacing-lg);
+            text-align: center;
+        }
+
+        .section-header h2 {
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--color-accent-gold), transparent);
+        }
+
+        .section-subtitle {
+            font-size: 1.25rem;
+            color: var(--color-text-muted);
+            margin-top: var(--spacing-sm);
+        }
+
+        /* Hero Section */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at top, rgba(61, 112, 101, 0.15), transparent 60%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            margin-bottom: var(--spacing-md);
+            background: linear-gradient(135deg, var(--color-text-primary), var(--color-accent-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-md);
+            font-weight: 300;
+        }
+
+        .hero-thesis {
+            font-size: 1.1rem;
+            color: var(--color-text-secondary);
+            max-width: 800px;
+            margin-bottom: var(--spacing-lg);
+            line-height: 1.8;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            border: 1px solid var(--color-accent-gold);
+            color: var(--color-accent-gold);
+            border-radius: 4px;
+            font-size: 1rem;
+            letter-spacing: 0.05em;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+            background-color: transparent;
+        }
+
+        .btn:hover {
+            background-color: var(--color-accent-gold);
+            color: var(--color-bg-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(201, 169, 97, 0.2);
+        }
+
+        .btn-primary {
+            background-color: var(--color-accent-gold);
+            color: var(--color-bg-primary);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--color-text-primary);
+        }
+
+        /* Cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+
+        .card {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: var(--spacing-md);
+            transition: var(--transition-smooth);
+        }
+
+        .card:hover {
+            background-color: var(--color-bg-card-hover);
+            border-color: var(--color-border-light);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            margin-bottom: var(--spacing-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(201, 169, 97, 0.1);
+            border-radius: 8px;
+            font-size: 1.5rem;
+        }
+
+        .card h4 {
+            color: var(--color-accent-gold);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Capabilities Map */
+        .capabilities-map {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+
+        .capability-item {
+            background-color: var(--color-bg-card);
+            border-left: 3px solid var(--color-accent-gold);
+            padding: var(--spacing-md);
+            border-radius: 4px;
+            transition: var(--transition-smooth);
+        }
+
+        .capability-item:hover {
+            background-color: var(--color-bg-card-hover);
+            transform: translateX(5px);
+        }
+
+        .capability-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background-color: var(--color-accent-gold);
+            color: var(--color-bg-primary);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .capability-item h4 {
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        /* Tools Stack */
+        .tools-category {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .tools-category h4 {
+            color: var(--color-accent-gold);
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: var(--spacing-xs);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .tools-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-xs);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .tool-tag {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+            transition: var(--transition-smooth);
+        }
+
+        .tool-tag:hover {
+            background-color: var(--color-accent-green);
+            border-color: var(--color-accent-green-bright);
+            color: var(--color-text-primary);
+        }
+
+        /* GitHub Section */
+        .github-values {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+
+        .github-value {
+            background: linear-gradient(135deg, var(--color-bg-card), var(--color-bg-secondary));
+            border: 1px solid var(--color-border);
+            padding: var(--spacing-md);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .github-value::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--color-accent-gold), var(--color-accent-green-bright));
+        }
+
+        .github-value h4 {
+            color: var(--color-text-primary);
+            padding-left: var(--spacing-sm);
+        }
+
+        .github-value p {
+            padding-left: var(--spacing-sm);
+        }
+
+        /* Solution Tree */
+        .tree-container {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            margin-top: var(--spacing-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tree-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--color-accent-gold), transparent);
+        }
+
+        .tree-layer {
+            margin-bottom: var(--spacing-lg);
+            padding: var(--spacing-md);
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .tree-layer:last-child {
+            margin-bottom: 0;
+        }
+
+        .tree-roots {
+            background: linear-gradient(135deg, rgba(61, 112, 101, 0.1), transparent);
+            border-left: 3px solid var(--color-accent-green-bright);
+        }
+
+        .tree-trunk {
+            background: linear-gradient(135deg, rgba(201, 169, 97, 0.1), transparent);
+            border-left: 3px solid var(--color-accent-gold);
+        }
+
+        .tree-branches {
+            background: linear-gradient(135deg, rgba(61, 112, 101, 0.05), transparent);
+            border-left: 3px solid var(--color-accent-green-bright);
+        }
+
+        .tree-leaves {
+            background: linear-gradient(135deg, rgba(201, 169, 97, 0.05), transparent);
+            border-left: 3px solid var(--color-accent-gold-muted);
+        }
+
+        .tree-layer-title {
+            font-family: var(--font-serif);
+            color: var(--color-accent-gold);
+            margin-bottom: var(--spacing-sm);
+            font-size: 1.5rem;
+        }
+
+        .tree-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-xs);
+        }
+
+        .tree-item {
+            background-color: var(--color-bg-secondary);
+            border: 1px solid var(--color-border);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+            transition: var(--transition-smooth);
+        }
+
+        .tree-item:hover {
+            background-color: var(--color-bg-card-hover);
+            color: var(--color-text-primary);
+            transform: scale(1.05);
+        }
+
+        .branches-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-sm);
+        }
+
+        .branch-card {
+            background-color: var(--color-bg-secondary);
+            border: 1px solid var(--color-border);
+            padding: var(--spacing-md);
+            border-radius: 8px;
+        }
+
+        .branch-card h5 {
+            color: var(--color-accent-gold);
+            margin-bottom: var(--spacing-xs);
+            font-size: 1.1rem;
+        }
+
+        .branch-card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .branch-card li {
+            padding: 0.3rem 0;
+            color: var(--color-text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .branch-card li::before {
+            content: '→ ';
+            color: var(--color-accent-gold);
+            margin-right: 0.5rem;
+        }
+
+        /* Sector Tabs */
+        .sector-tabs {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+            flex-wrap: wrap;
+        }
+
+        .sector-tab {
+            padding: 1rem 2rem;
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            font-size: 1rem;
+        }
+
+        .sector-tab:hover {
+            background-color: var(--color-bg-card-hover);
+            color: var(--color-text-primary);
+        }
+
+        .sector-tab.active {
+            background-color: var(--color-accent-gold);
+            color: var(--color-bg-primary);
+            border-color: var(--color-accent-gold);
+        }
+
+        .sector-content {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .sector-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Business Model Progression */
+        .progression-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+            position: relative;
+        }
+
+        .progression-step {
+            background-color: var(--color-bg-card);
+            border: 2px solid var(--color-border);
+            border-radius: 8px;
+            padding: var(--spacing-md);
+            position: relative;
+            transition: var(--transition-smooth);
+        }
+
+        .progression-step:hover {
+            border-color: var(--color-accent-gold);
+            transform: translateY(-5px);
+        }
+
+        .step-number {
+            position: absolute;
+            top: -15px;
+            left: var(--spacing-md);
+            background-color: var(--color-accent-gold);
+            color: var(--color-bg-primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .progression-step h4 {
+            margin-top: var(--spacing-md);
+            color: var(--color-text-primary);
+        }
+
+        /* Partnership Value */
+        .partnership-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-lg);
+        }
+
+        .partnership-column {
+            background: linear-gradient(135deg, var(--color-bg-card), var(--color-bg-secondary));
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            position: relative;
+        }
+
+        .partnership-column::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--color-accent-gold), var(--color-accent-green-bright));
+            border-radius: 12px 12px 0 0;
+        }
+
+        .partnership-column h3 {
+            color: var(--color-accent-gold);
+            margin-bottom: var(--spacing-md);
+            text-align: center;
+        }
+
+        .partnership-column ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .partnership-column li {
+            padding: var(--spacing-sm) 0;
+            border-bottom: 1px solid var(--color-border);
+            color: var(--color-text-secondary);
+        }
+
+        .partnership-column li:last-child {
+            border-bottom: none;
+        }
+
+        .partnership-column li::before {
+            content: '✓';
+            color: var(--color-accent-gold);
+            margin-right: var(--spacing-sm);
+            font-weight: bold;
+        }
+
+        .partnership-synergy {
+            background: linear-gradient(135deg, rgba(201, 169, 97, 0.1), rgba(61, 112, 101, 0.1));
+            border: 2px solid var(--color-accent-gold);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            margin-top: var(--spacing-lg);
+            text-align: center;
+        }
+
+        .partnership-synergy h4 {
+            color: var(--color-accent-gold);
+            font-size: 1.5rem;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        /* Priority Matrix */
+        .priority-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+
+        .priority-card {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: var(--spacing-md);
+            position: relative;
+        }
+
+        .priority-badge {
+            position: absolute;
+            top: var(--spacing-sm);
+            right: var(--spacing-sm);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .priority-immediate {
+            background-color: var(--color-accent-gold);
+            color: var(--color-bg-primary);
+        }
+
+        .priority-short-term {
+            background-color: var(--color-accent-green-bright);
+            color: var(--color-text-primary);
+        }
+
+        .priority-medium-term {
+            background-color: var(--color-border-light);
+            color: var(--color-text-primary);
+        }
+
+        .priority-long-term {
+            background-color: var(--color-bg-secondary);
+            color: var(--color-text-secondary);
+            border: 1px solid var(--color-border);
+        }
+
+        /* Conclusion */
+        .conclusion-box {
+            background: linear-gradient(135deg, var(--color-bg-card), var(--color-bg-secondary));
+            border: 2px solid var(--color-accent-gold);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            text-align: center;
+            margin-top: var(--spacing-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .conclusion-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--color-accent-gold), var(--color-accent-green-bright), var(--color-accent-gold));
+        }
+
+        .conclusion-box h3 {
+            color: var(--color-accent-gold);
+            font-size: 2rem;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .conclusion-box p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto var(--spacing-md);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--color-bg-secondary);
+            border-top: 1px solid var(--color-border);
+            padding: var(--spacing-lg) 0;
+            text-align: center;
+            margin-top: var(--spacing-xl);
+        }
+
+        footer p {
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+
+            .card-grid,
+            .capabilities-map,
+            .branches-grid,
+            .partnership-grid,
+            .progression-steps,
+            .priority-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sector-tab {
+                padding: 0.75rem 1.5rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            nav {
+                display: none;
+            }
+
+            section {
+                page-break-inside: avoid;
+                padding: 2rem 0;
+            }
+
+            .card:hover,
+            .btn:hover {
+                transform: none;
+                box-shadow: none;
+            }
+
+            body {
+                background-color: white;
+                color: black;
+            }
+
+            h1, h2, h3, h4 {
+                color: black;
+            }
+
+            .card,
+            .tree-container,
+            .partnership-column {
+                border: 1px solid #ccc;
+                background-color: white;
+            }
+        }
+
+        /* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+
+            html {
+                scroll-behavior: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <div class="logo">WPIA</div>
+            <ul>
+                <li><a href="#hero" class="nav-link">Inicio</a></li>
+                <li><a href="#tesis" class="nav-link">Tesis</a></li>
+                <li><a href="#capacidades" class="nav-link">Capacidades</a></li>
+                <li><a href="#stack" class="nav-link">Stack</a></li>
+                <li><a href="#arbol" class="nav-link">Soluciones</a></li>
+                <li><a href="#sectores" class="nav-link">Aplicaciones</a></li>
+                <li><a href="#partnership" class="nav-link">Partnership</a></li>
+                <li><a href="#contacto" class="nav-link">Contacto</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Arquitectura de Soluciones Inteligentes</h1>
+                <p class="hero-subtitle">Convertimos Business Intelligence, Inteligencia Artificial y automatización en soluciones de negocio escalables</p>
+                <p class="hero-thesis">
+                    Construimos una plataforma de soluciones con aplicación en negocios privados, sector gubernamental y servicios de consumo masivo.
+                    El verdadero activo no es la tecnología en sí misma, sino la capacidad de articularla en respuestas concretas que generen
+                    valor económico, diferenciación estratégica y oportunidades de crecimiento recurrente.
+                </p>
+                <a href="#contacto" class="btn btn-primary">Explorar Oportunidad Estratégica</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tesis Section -->
+    <section id="tesis">
+        <div class="container">
+            <div class="section-header">
+                <h2>La Tesis Estratégica</h2>
+                <p class="section-subtitle">Tecnología como arquitectura de negocio, no como fin</p>
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-icon">🎯</div>
+                    <h4>Propuesta de Valor</h4>
+                    <p>La combinación de Business Intelligence, Inteligencia Artificial, automatización y aprovechamiento estratégico de herramientas accesibles permite construir soluciones convertibles en negocios reales.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">⚡</div>
+                    <h4>Activo Central</h4>
+                    <p>El verdadero activo es la capacidad de articular tecnología dentro de una lógica de solución: convertir herramientas en respuestas concretas para problemas operativos, comerciales, institucionales o de experiencia del usuario.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">📈</div>
+                    <h4>Evolución Escalable</h4>
+                    <p>Las capacidades técnicas operan como infraestructura estratégica que evoluciona desde servicios especializados hasta soluciones repetibles, productos digitales y SaaS verticales con valor de mercado.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Capacidades Section -->
+    <section id="capacidades">
+        <div class="container">
+            <div class="section-header">
+                <h2>Mapa de Capacidades</h2>
+                <p class="section-subtitle">Infraestructura analítica convertible en soluciones de valor</p>
+            </div>
+
+            <div class="capabilities-map">
+                <div class="capability-item">
+                    <span class="capability-number">1</span>
+                    <h4>Captura e Integración de Datos</h4>
+                    <p>Recolección, limpieza y estructuración de información desde múltiples fuentes. Convertimos datos dispersos en activos operables con visibilidad confiable y trazabilidad completa.</p>
+                </div>
+
+                <div class="capability-item">
+                    <span class="capability-number">2</span>
+                    <h4>Inteligencia Descriptiva y Diagnóstica</h4>
+                    <p>Transformación de información en entendimiento mediante dashboards, indicadores y visualización. Generamos claridad ejecutiva para decisiones más inteligentes.</p>
+                </div>
+
+                <div class="capability-item">
+                    <span class="capability-number">3</span>
+                    <h4>Inteligencia Predictiva y Analítica Avanzada</h4>
+                    <p>Modelos capaces de predecir, clasificar, segmentar y detectar anomalías. Asignamos probabilidad al futuro para generar ventaja competitiva y anticipación estratégica.</p>
+                </div>
+
+                <div class="capability-item">
+                    <span class="capability-number">4</span>
+                    <h4>Automatización e Inteligencia Operativa</h4>
+                    <p>Conversión de lógica analítica en acción operativa. Reducimos costos, tiempos muertos y errores mediante flujos, alertas y procesos sistematizados.</p>
+                </div>
+
+                <div class="capability-item">
+                    <span class="capability-number">5</span>
+                    <h4>Inteligencia Aplicada a Decisión, Producto y Servicio</h4>
+                    <p>Capacidades analíticas convertidas en soluciones vendibles: recomendadores, asistentes, motores de personalización, paneles externos y sistemas de priorización.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stack Section -->
+    <section id="stack">
+        <div class="container">
+            <div class="section-header">
+                <h2>Stack Tecnológico Accesible</h2>
+                <p class="section-subtitle">Herramientas que permiten prototipar rápido, validar mercado y escalar conforme aparece demanda</p>
+            </div>
+
+            <div class="tools-category">
+                <h4>Datos e Integración</h4>
+                <p style="color: var(--color-text-secondary); margin-bottom: 1rem;">Captura, transformación y estructuración de información</p>
+                <div class="tools-list">
+                    <span class="tool-tag">Excel</span>
+                    <span class="tool-tag">Google Sheets</span>
+                    <span class="tool-tag">SQL</span>
+                    <span class="tool-tag">APIs</span>
+                    <span class="tool-tag">Conectores de datos</span>
+                    <span class="tool-tag">Bases de datos relacionales</span>
+                    <span class="tool-tag">Pipelines ETL</span>
+                </div>
+            </div>
+
+            <div class="tools-category">
+                <h4>Análisis y Visualización</h4>
+                <p style="color: var(--color-text-secondary); margin-bottom: 1rem;">Conversión de datos en lectura de negocio</p>
+                <div class="tools-list">
+                    <span class="tool-tag">Power BI</span>
+                    <span class="tool-tag">Looker Studio</span>
+                    <span class="tool-tag">Python para análisis</span>
+                    <span class="tool-tag">R para estadística</span>
+                    <span class="tool-tag">Dashboards web</span>
+                    <span class="tool-tag">Reporting ejecutivo</span>
+                </div>
+            </div>
+
+            <div class="tools-category">
+                <h4>Inteligencia Artificial y Analítica Avanzada</h4>
+                <p style="color: var(--color-text-secondary); margin-bottom: 1rem;">Construcción de soluciones con mayor sofisticación analítica</p>
+                <div class="tools-list">
+                    <span class="tool-tag">Python ML</span>
+                    <span class="tool-tag">NLP</span>
+                    <span class="tool-tag">Clasificación y regresión</span>
+                    <span class="tool-tag">Clustering</span>
+                    <span class="tool-tag">Detección de anomalías</span>
+                    <span class="tool-tag">LLMs</span>
+                    <span class="tool-tag">Embeddings</span>
+                    <span class="tool-tag">Búsqueda semántica</span>
+                    <span class="tool-tag">Sistemas conversacionales</span>
+                </div>
+            </div>
+
+            <div class="tools-category">
+                <h4>Automatización y Orquestación</h4>
+                <p style="color: var(--color-text-secondary); margin-bottom: 1rem;">Plataformas que conectan sistemas y convierten lógica en procesos operativos</p>
+                <div class="tools-list">
+                    <span class="tool-tag">n8n</span>
+                    <span class="tool-tag">Make</span>
+                    <span class="tool-tag">Zapier</span>
+                    <span class="tool-tag">Webhooks</span>
+                    <span class="tool-tag">Integraciones CRM</span>
+                    <span class="tool-tag">WhatsApp Business</span>
+                    <span class="tool-tag">Automatización documental</span>
+                    <span class="tool-tag">Activadores por evento</span>
+                </div>
+            </div>
+
+            <div class="tools-category">
+                <h4>Interfaz, Despliegue y Producto</h4>
+                <p style="color: var(--color-text-secondary); margin-bottom: 1rem;">Conversión de capacidades técnicas en soluciones navegables y compartibles</p>
+                <div class="tools-list">
+                    <span class="tool-tag">Streamlit</span>
+                    <span class="tool-tag">Aplicaciones web ligeras</span>
+                    <span class="tool-tag">Dashboards externos</span>
+                    <span class="tool-tag">Bots conversacionales</span>
+                    <span class="tool-tag">Portales de consulta</span>
+                    <span class="tool-tag">MVPs digitales</span>
+                    <span class="tool-tag">Arquitectura SaaS</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GitHub Section -->
+    <section id="github">
+        <div class="container">
+            <div class="section-header">
+                <h2>GitHub y Open Source como Ventaja Estratégica</h2>
+                <p class="section-subtitle">Infraestructura de innovación, desarrollo y apalancamiento competitivo</p>
+            </div>
+
+            <div class="github-values">
+                <div class="github-value">
+                    <h4>Infraestructura de Desarrollo</h4>
+                    <p>GitHub permite versionar soluciones, documentar procesos, estructurar activos digitales y trabajar con método. Transmite capacidad de construir con trazabilidad y escalamiento profesional.</p>
+                </div>
+
+                <div class="github-value">
+                    <h4>Radar de Innovación</h4>
+                    <p>La innovación más valiosa en IA, automatización y analítica circula primero por ecosistemas open source. Acceso temprano a herramientas emergentes antes que el mercado tradicional.</p>
+                </div>
+
+                <div class="github-value">
+                    <h4>Ventaja Competitiva</h4>
+                    <p>Reducción de costos de desarrollo, acceso a tecnologías potentes, flexibilidad para personalizar e independencia frente a proveedores cerrados. Competir con estructuras más grandes usando menos capital inicial.</p>
+                </div>
+
+                <div class="github-value">
+                    <h4>Detección de Oportunidades SaaS</h4>
+                    <p>Muchos SaaS exitosos identifican herramientas open source y las convierten en experiencias más simples, sectorizadas o orientadas a negocio. Empaquetar, simplificar y especializar para nichos concretos.</p>
+                </div>
+
+                <div class="github-value">
+                    <h4>Señal de Seriedad</h4>
+                    <p>Para socios estratégicos, GitHub representa orden, consistencia, capacidad de ejecución, visión de producto y posibilidad de escalar equipos con claridad documental.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Árbol de Soluciones -->
+    <section id="arbol">
+        <div class="container">
+            <div class="section-header">
+                <h2>Árbol de Soluciones</h2>
+                <p class="section-subtitle">De fundamentos a productos: arquitectura completa de conversión en negocio</p>
+            </div>
+
+            <div class="tree-container">
+                <!-- Raíces -->
+                <div class="tree-layer tree-roots">
+                    <h3 class="tree-layer-title">🌱 Raíces: Fundamentos</h3>
+                    <p style="color: var(--color-text-secondary); margin-bottom: 1rem;">Elementos invisibles pero indispensables que anclan toda solución a problemas reales</p>
+                    <div class="tree-items">
+                        <span class="tree-item">Comprensión del problema</span>
+                        <span class="tree-item">Conocimiento de procesos</span>
+                        <span class="tree-item">Lectura del contexto</span>
+                        <span class="tree-item">Calidad de datos</span>
+                        <span class="tree-item">Lógica operativa</span>
+                        <span class="tree-item">Factibilidad de implementación</span>
+                    </div>
+                </div>
+
+                <!-- Tronco -->
+                <div class="tree-layer tree-trunk">
+                    <h3 class="tree-layer-title">🌳 Tronco: Capacidades Centrales</h3>
+                    <p style="color: var(--color-text-secondary); margin-bottom: 1rem;">Base estructural que alimenta múltiples direcciones de crecimiento</p>
+                    <div class="tree-items">
+                        <span class="tree-item">Integración de datos</span>
+                        <span class="tree-item">BI descriptivo y diagnóstico</span>
+                        <span class="tree-item">Analítica predictiva</span>
+                        <span class="tree-item">Automatización</span>
+                        <span class="tree-item">IA aplicada</span>
+                        <span class="tree-item">Diseño de producto digital</span>
+                        <span class="tree-item">Aprovechamiento de open source</span>
+                    </div>
+                </div>
+
+                <!-- Ramas -->
+                <div class="tree-layer tree-branches">
+                    <h3 class="tree-layer-title">🌿 Ramas: Familias de Soluciones</h3>
+                    <p style="color: var(--color-text-secondary); margin-bottom: 1rem;">Grandes categorías de aplicación con lógicas específicas de valor</p>
+
+                    <div class="branches-grid">
+                        <div class="branch-card">
+                            <h5>Inteligencia de Operación</h5>
+                            <ul>
+                                <li>Dashboards operativos</li>
+                                <li>Trazabilidad de procesos</li>
+                                <li>Alertas de incidencias</li>
+                                <li>Control de inventario</li>
+                                <li>Detección de cuellos de botella</li>
+                            </ul>
+                        </div>
+
+                        <div class="branch-card">
+                            <h5>Inteligencia Comercial</h5>
+                            <ul>
+                                <li>Segmentación de clientes</li>
+                                <li>Scoring de leads</li>
+                                <li>Forecast de ventas</li>
+                                <li>Análisis de rentabilidad</li>
+                                <li>Inteligencia para pricing</li>
+                            </ul>
+                        </div>
+
+                        <div class="branch-card">
+                            <h5>Inteligencia de Servicio</h5>
+                            <ul>
+                                <li>Bots de atención</li>
+                                <li>Clasificación de solicitudes</li>
+                                <li>Seguimiento de tickets</li>
+                                <li>Recomendaciones de respuesta</li>
+                                <li>Automatización de contacto</li>
+                            </ul>
+                        </div>
+
+                        <div class="branch-card">
+                            <h5>Inteligencia de Riesgo</h5>
+                            <ul>
+                                <li>Scoring de riesgo</li>
+                                <li>Detección de fraude</li>
+                                <li>Anomalías operativas</li>
+                                <li>Análisis de cumplimiento</li>
+                                <li>Priorización de revisión</li>
+                            </ul>
+                        </div>
+
+                        <div class="branch-card">
+                            <h5>Inteligencia Pública</h5>
+                            <ul>
+                                <li>Tableros de programas públicos</li>
+                                <li>Priorización de beneficiarios</li>
+                                <li>Monitoreo territorial</li>
+                                <li>Atención ciudadana</li>
+                                <li>Medición institucional</li>
+                            </ul>
+                        </div>
+
+                        <div class="branch-card">
+                            <h5>Inteligencia para Consumo</h5>
+                            <ul>
+                                <li>Recomendación de productos</li>
+                                <li>Análisis de recompra</li>
+                                <li>Pronóstico de demanda</li>
+                                <li>Personalización</li>
+                                <li>Optimización de campañas</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hojas -->
+                <div class="tree-layer tree-leaves">
+                    <h3 class="tree-layer-title">🍃 Hojas: Nichos, Productos y SaaS</h3>
+                    <p style="color: var(--color-text-secondary); margin-bottom: 1rem;">Aplicaciones concretas y monetizables, capa más visible del árbol</p>
+                    <div class="tree-items">
+                        <span class="tree-item">Dashboard comercial para pymes</span>
+                        <span class="tree-item">Panel de inventario predictivo</span>
+                        <span class="tree-item">Scoring de leads inmobiliarias</span>
+                        <span class="tree-item">Bot de reservas restaurantes</span>
+                        <span class="tree-item">Analítica de recurrencia clínicas</span>
+                        <span class="tree-item">Sistema de cobranza inteligente</span>
+                        <span class="tree-item">Tablero programas sociales</span>
+                        <span class="tree-item">Atención ciudadana automatizada</span>
+                        <span class="tree-item">Priorización de reportes públicos</span>
+                        <span class="tree-item">Motor de recomendación e-commerce</span>
+                        <span class="tree-item">Promociones segmentadas</span>
+                        <span class="tree-item">Forecast por tienda/zona</span>
+                        <span class="tree-item">Asistentes especializados sobre modelos abiertos</span>
+                        <span class="tree-item">Buscadores semánticos internos</span>
+                        <span class="tree-item">Automatización documental vertical</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sectores Section -->
+    <section id="sectores">
+        <div class="container">
+            <div class="section-header">
+                <h2>Aplicaciones por Sector</h2>
+                <p class="section-subtitle">Soluciones específicas para negocios, gobierno y consumo masivo</p>
+            </div>
+
+            <div class="sector-tabs">
+                <button class="sector-tab active" data-sector="privado">Negocios Privados</button>
+                <button class="sector-tab" data-sector="gobierno">Sector Gubernamental</button>
+                <button class="sector-tab" data-sector="consumo">Consumo Masivo</button>
+            </div>
+
+            <div class="sector-content active" id="privado">
+                <h3 style="color: var(--color-accent-gold); margin-bottom: 2rem;">Negocios Privados</h3>
+                <p style="font-size: 1.1rem; margin-bottom: 2rem;">
+                    El sector privado ofrece oportunidad inmediata por demanda clara de eficiencia, visibilidad, control, crecimiento comercial y mejor experiencia del cliente.
+                </p>
+
+                <div class="card-grid">
+                    <div class="card">
+                        <h4>Propuesta de Valor</h4>
+                        <p>Vender más, perder menos, responder más rápido, entender mejor al cliente, reducir errores y tiempos, pronosticar con mayor precisión.</p>
+                    </div>
+
+                    <div class="card">
+                        <h4>Soluciones Clave</h4>
+                        <p>Dashboards comerciales, paneles de inventario predictivo, scoring de leads, bots de atención y reservas, analítica de recurrencia, sistemas de cobranza inteligente, monitoreo de desempeño comercial.</p>
+                    </div>
+
+                    <div class="card">
+                        <h4>Ventaja Estratégica</h4>
+                        <p>Permite construir casos rápidos, validar propuestas y abrir relaciones con actores clave. Genera flujo inmediato y aprendizaje de mercado.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sector-content" id="gobierno">
+                <h3 style="color: var(--color-accent-gold); margin-bottom: 2rem;">Sector Gubernamental</h3>
+                <p style="font-size: 1.1rem; margin-bottom: 2rem;">
+                    En el sector gubernamental, el valor se concentra en trazabilidad, transparencia, priorización, monitoreo institucional, atención ciudadana y eficiencia administrativa.
+                </p>
+
+                <div class="card-grid">
+                    <div class="card">
+                        <h4>Propuesta de Valor</h4>
+                        <p>La tecnología bien presentada se convierte en instrumento de legitimidad, control y mejora operativa para instituciones públicas.</p>
+                    </div>
+
+                    <div class="card">
+                        <h4>Soluciones Clave</h4>
+                        <p>Tableros de programas sociales, plataforma de atención ciudadana con clasificación automática, sistema de priorización de reportes, analítica territorial de incidencias, dashboard de KPIs institucionales, monitoreo de tiempos de respuesta.</p>
+                    </div>
+
+                    <div class="card">
+                        <h4>Factor Crítico</h4>
+                        <p>El acceso y la confianza son tan importantes como la tecnología misma. Un socio con capital social puede ser especialmente relevante en este frente.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sector-content" id="consumo">
+                <h3 style="color: var(--color-accent-gold); margin-bottom: 2rem;">Servicios de Consumo Masivo</h3>
+                <p style="font-size: 1.1rem; margin-bottom: 2rem;">
+                    En consumo masivo, la oportunidad está en volumen, repetición y comportamiento: entender patrones, personalizar, optimizar campañas, mejorar recompra, prever demanda y reducir abandono.
+                </p>
+
+                <div class="card-grid">
+                    <div class="card">
+                        <h4>Propuesta de Valor</h4>
+                        <p>Soluciones que entienden comportamiento del consumidor y optimizan cada punto de contacto en el ciclo de compra y recompra.</p>
+                    </div>
+
+                    <div class="card">
+                        <h4>Soluciones Clave</h4>
+                        <p>Motor de recomendación para e-commerce, plataforma de promociones segmentadas, sistema de forecast por tienda/canal/zona, panel de comportamiento de clientes, solución de abandono y recompra, analítica de surtido y rotación.</p>
+                    </div>
+
+                    <div class="card">
+                        <h4>Potencial de Escala</h4>
+                        <p>Las soluciones tienen más posibilidad de escalar si logran integrarse en procesos existentes de marketing, ventas, operación o e-commerce.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Business Model Section -->
+    <section id="modelo">
+        <div class="container">
+            <div class="section-header">
+                <h2>De Capacidad a Modelo Comercial</h2>
+                <p class="section-subtitle">Escalera de maduración del negocio hacia soluciones recurrentes</p>
+            </div>
+
+            <div class="progression-steps">
+                <div class="progression-step">
+                    <span class="step-number">1</span>
+                    <h4>Servicio Especializado</h4>
+                    <p>Primera monetización mediante dashboards, automatización, implementación de analítica, diseño de procesos e integración de herramientas. Genera flujo, aprendizaje de mercado y relaciones.</p>
+                </div>
+
+                <div class="progression-step">
+                    <span class="step-number">2</span>
+                    <h4>Solución Repetible por Vertical</h4>
+                    <p>Cuando un problema aparece varias veces en un mismo sector, la solución puede empaquetarse: para restaurantes, retail, despachos, gobierno local, atención ciudadana, clínicas o membresías. Aparece la estandarización parcial.</p>
+                </div>
+
+                <div class="progression-step">
+                    <span class="step-number">3</span>
+                    <h4>Producto Digital</h4>
+                    <p>La solución ya no depende completamente del servicio personalizado: paneles autoactualizables, asistentes de consulta, portales externos, sistemas de monitoreo, flujos automatizados configurables.</p>
+                </div>
+
+                <div class="progression-step">
+                    <span class="step-number">4</span>
+                    <h4>SaaS Vertical</h4>
+                    <p>Punto más alto de maduración: software recurrente por nicho con problema muy claro, alto dolor del cliente, procesos repetibles y capacidad de despliegue. Convergencia de BI, IA, automatización y open source en activo con alto valor estratégico.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Partnership Section -->
+    <section id="partnership">
+        <div class="container">
+            <div class="section-header">
+                <h2>El Valor del Partnership</h2>
+                <p class="section-subtitle">Complementariedad entre capital técnico y capital social</p>
+            </div>
+
+            <div class="partnership-grid">
+                <div class="partnership-column">
+                    <h3>Capital Técnico y de Construcción</h3>
+                    <ul>
+                        <li>Capacidades sólidas en BI, IA y automatización</li>
+                        <li>Dominio de herramientas accesibles y open source</li>
+                        <li>Arquitectura de soluciones convertibles en negocio</li>
+                        <li>Velocidad de prototipado y validación</li>
+                        <li>Visión de producto y diseño de experiencia</li>
+                        <li>Capacidad de evolucionar hacia SaaS</li>
+                        <li>Infraestructura ordenada y escalable</li>
+                    </ul>
+                </div>
+
+                <div class="partnership-column">
+                    <h3>Capital Social y Estratégico</h3>
+                    <ul>
+                        <li>Criterio de negocio y visión estratégica</li>
+                        <li>Capacidad de abrir puertas y acelerar relaciones</li>
+                        <li>Acceso a decisores en sectores clave</li>
+                        <li>Lectura de mercado y oportunidades</li>
+                        <li>Posicionamiento y legitimidad institucional</li>
+                        <li>Red de contactos de alto valor</li>
+                        <li>Experiencia en estructuración de negocios</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="partnership-synergy">
+                <h4>La Oportunidad No Es Solo "Hacer Proyectos"</h4>
+                <p style="font-size: 1.1rem; line-height: 1.8; color: var(--color-text-secondary);">
+                    La oportunidad es construir una plataforma de soluciones con capacidad de penetración real.
+                    La convergencia entre ejecución técnica de alto nivel y acceso estratégico a mercado crea las condiciones
+                    para evolucionar desde servicios hacia productos recurrentes, nichos defendibles y activos de alto valor.
+                </p>
+                <p style="font-size: 1.1rem; line-height: 1.8; color: var(--color-text-secondary); margin-top: 1rem;">
+                    Un socio con capital social no solo acelera la entrada al mercado: permite seleccionar mejores oportunidades,
+                    posicionar la oferta con mayor solvencia y construir sobre relaciones de confianza en contextos donde
+                    el acceso es tan determinante como la capacidad técnica.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Priorización Section -->
+    <section id="priorizacion">
+        <div class="container">
+            <div class="section-header">
+                <h2>Priorización Estratégica</h2>
+                <p class="section-subtitle">Roadmap de oportunidades según viabilidad, impacto y potencial estructural</p>
+            </div>
+
+            <div class="priority-grid">
+                <div class="priority-card">
+                    <span class="priority-badge priority-immediate">Inmediato</span>
+                    <h4>Dashboards y BI para Pymes</h4>
+                    <p>Visibilidad operativa y comercial. Problema claro, alta demanda, baja fricción de entrada, permite validar mercado y construir casos rápido.</p>
+                </div>
+
+                <div class="priority-card">
+                    <span class="priority-badge priority-immediate">Inmediato</span>
+                    <h4>Automatización de Atención</h4>
+                    <p>Bots, clasificación de solicitudes, seguimiento. Genera valor visible rápido, reduce fricción operativa, aplicable en múltiples sectores.</p>
+                </div>
+
+                <div class="priority-card">
+                    <span class="priority-badge priority-short-term">Corto Plazo</span>
+                    <h4>Scoring y Priorización Comercial</h4>
+                    <p>Leads, clientes, riesgo. Problema recurrente en ventas y servicios, permite diferenciación técnica con impacto medible en ingresos.</p>
+                </div>
+
+                <div class="priority-card">
+                    <span class="priority-badge priority-short-term">Corto Plazo</span>
+                    <h4>Soluciones de Gobierno Local</h4>
+                    <p>Atención ciudadana, tableros institucionales. Alto impacto social, requiere capital social para acceso, permite construcción de reputación institucional.</p>
+                </div>
+
+                <div class="priority-card">
+                    <span class="priority-badge priority-medium-term">Mediano Plazo</span>
+                    <h4>Analítica Predictiva Vertical</h4>
+                    <p>Forecast, churn, recompra por industria específica. Requiere casos previos para validación, mayor sofisticación técnica, posicionamiento como solución especializada.</p>
+                </div>
+
+                <div class="priority-card">
+                    <span class="priority-badge priority-medium-term">Mediano Plazo</span>
+                    <h4>Motores de Recomendación</h4>
+                    <p>E-commerce, contenido, servicios. Aplicable en consumo masivo, requiere volumen de datos, alta escalabilidad potencial.</p>
+                </div>
+
+                <div class="priority-card">
+                    <span class="priority-badge priority-long-term">Largo Plazo</span>
+                    <h4>SaaS Vertical Especializado</h4>
+                    <p>Producto recurrente para nicho defendible. Requiere validación previa de mercado, aprendizaje de vertical, infraestructura de producto y soporte.</p>
+                </div>
+
+                <div class="priority-card">
+                    <span class="priority-badge priority-long-term">Largo Plazo</span>
+                    <h4>Plataforma de IA Aplicada Sectorial</h4>
+                    <p>Solución integral sobre stack open source empaquetado. Mayor potencial estructural, requiere madurez técnica, casos consolidados y capacidad de distribución.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conclusion Section -->
+    <section id="contacto">
+        <div class="container">
+            <div class="section-header">
+                <h2>Construir con Criterio, Escalar con Método</h2>
+            </div>
+
+            <div class="conclusion-box">
+                <h3>Una Oportunidad Seria y Bien Estructurada</h3>
+                <p>
+                    Existe una arquitectura completa que va desde capacidades técnicas sólidas hasta aplicaciones concretas
+                    con potencial de mercado. No se trata de vender tecnología por moda, sino de construir soluciones que
+                    resuelvan problemas reales y generen valor económico sostenible.
+                </p>
+                <p>
+                    La combinación entre ejecución técnica de alto nivel, aprovechamiento inteligente de herramientas accesibles
+                    y open source, visión de producto y acceso estratégico a mercado crea las condiciones para evolucionar desde
+                    servicios hacia productos recurrentes, nichos defendibles y activos de alto valor.
+                </p>
+                <p>
+                    Este no es un pitch de startup. Es una presentación institucional de capacidades convertibles en negocio,
+                    respaldadas por una lógica clara de progresión comercial y una tesis estratégica coherente.
+                </p>
+                <p style="margin-top: 2rem; font-size: 1.2rem; color: var(--color-accent-gold);">
+                    La invitación es explorar una conversación estratégica sobre cómo construir juntos una plataforma de soluciones
+                    con capacidad de penetración real en negocios, gobierno y consumo masivo.
+                </p>
+                <div style="margin-top: 3rem;">
+                    <a href="mailto:contacto@wpia.com" class="btn btn-primary">Iniciar Conversación Estratégica</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 WPIA. Arquitectura de Soluciones Inteligentes.</p>
+            <p style="margin-top: 0.5rem;">Business Intelligence, Inteligencia Artificial y Automatización convertidas en valor de negocio.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Intersection Observer for section animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Navigation active state
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('section');
+
+        function updateActiveNav() {
+            let current = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+
+                if (window.pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', updateActiveNav);
+
+        // Sector tabs functionality
+        const sectorTabs = document.querySelectorAll('.sector-tab');
+        const sectorContents = document.querySelectorAll('.sector-content');
+
+        sectorTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const sector = tab.getAttribute('data-sector');
+
+                // Update active tab
+                sectorTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                // Update active content
+                sectorContents.forEach(content => {
+                    content.classList.remove('active');
+                    if (content.getAttribute('id') === sector) {
+                        content.classList.add('active');
+                    }
+                });
+            });
+        });
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+
+                if (target) {
+                    const offsetTop = target.offsetTop - 80;
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Respect prefers-reduced-motion
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            document.querySelectorAll('*').forEach(el => {
+                el.style.animation = 'none';
+                el.style.transition = 'none';
+            });
+        }
+    </script>
+</body>
+</html>
